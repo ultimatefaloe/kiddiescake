@@ -1,20 +1,23 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ProductCard from "@/components/ProductCard";
 import Navigation from "@/components/Navigation";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const { addToCart } = useCart();
+  const { toast } = useToast();
 
   const [products] = useState([
     {
       id: 1,
       name: "Rainbow Birthday Cake",
-      category: "Cakes",
-      price: 45.99,
+      category: "Cakes", 
+      price: 4599,
       image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
       images: ["https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop"],
       description: "Colorful layered cake perfect for birthday celebrations"
@@ -23,7 +26,7 @@ const Products = () => {
       id: 2,
       name: "Chocolate Chip Cookies",
       category: "Cookies",
-      price: 12.99,
+      price: 1299,
       image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop",
       images: ["https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop"],
       description: "Freshly baked cookies with premium chocolate chips"
@@ -32,7 +35,7 @@ const Products = () => {
       id: 3,
       name: "Fudge Brownies",
       category: "Brownies",
-      price: 18.99,
+      price: 1899,
       image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=300&fit=crop",
       images: ["https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=300&fit=crop"],
       description: "Rich, decadent brownies with a perfect fudgy texture"
@@ -41,7 +44,7 @@ const Products = () => {
       id: 4,
       name: "Vanilla Cupcakes",
       category: "Cakes",
-      price: 24.99,
+      price: 2499,
       image: "https://images.unsplash.com/photo-1587668178277-295251f900ce?w=400&h=300&fit=crop",
       images: ["https://images.unsplash.com/photo-1587668178277-295251f900ce?w=400&h=300&fit=crop"],
       description: "Fluffy vanilla cupcakes with buttercream frosting"
@@ -50,7 +53,7 @@ const Products = () => {
       id: 5,
       name: "Sugar Cookies",
       category: "Cookies",
-      price: 15.99,
+      price: 1599,
       image: "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&h=300&fit=crop",
       images: ["https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&h=300&fit=crop"],
       description: "Classic sugar cookies with colorful icing decorations"
@@ -59,7 +62,7 @@ const Products = () => {
       id: 6,
       name: "Walnut Brownies",
       category: "Brownies",
-      price: 22.99,
+      price: 2299,
       image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop",
       images: ["https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop"],
       description: "Rich brownies loaded with fresh walnuts"
@@ -73,6 +76,14 @@ const Products = () => {
     const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handleAddToCart = (product: any) => {
+    addToCart(product);
+    toast({
+      title: "Added to Cart",
+      description: `${product.name} has been added to your cart!`,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-orange-50">
@@ -122,7 +133,11 @@ const Products = () => {
           {/* Products Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                onAddToCart={handleAddToCart}
+              />
             ))}
           </div>
 

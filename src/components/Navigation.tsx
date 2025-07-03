@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Cake, Menu, X } from "lucide-react";
+import { Cake, Menu, X, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navigation = () => {
@@ -30,7 +30,7 @@ const Navigation = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -44,6 +44,24 @@ const Navigation = () => {
                 {link.label}
               </Link>
             ))}
+            
+            <div className="flex items-center space-x-4">
+              <Link to="/cart">
+                <Button variant="ghost" size="sm" className="text-gray-700">
+                  <ShoppingCart className="h-5 w-5" />
+                </Button>
+              </Link>
+              <Link to="/profile">
+                <Button variant="ghost" size="sm" className="text-gray-700">
+                  <User className="h-5 w-5" />
+                </Button>
+              </Link>
+              <Link to="/signin">
+                <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-accent">
+                  Sign In
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -77,6 +95,27 @@ const Navigation = () => {
                   {link.label}
                 </Link>
               ))}
+              <Link
+                to="/cart"
+                className="block px-4 py-2 font-medium text-gray-700 hover:text-primary hover:bg-accent"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Cart
+              </Link>
+              <Link
+                to="/profile"
+                className="block px-4 py-2 font-medium text-gray-700 hover:text-primary hover:bg-accent"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Profile
+              </Link>
+              <Link
+                to="/signin"
+                className="block px-4 py-2 font-medium text-gray-700 hover:text-primary hover:bg-accent"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Sign In
+              </Link>
             </div>
           </div>
         )}

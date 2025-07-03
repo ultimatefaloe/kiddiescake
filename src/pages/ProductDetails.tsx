@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
@@ -6,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/contexts/CartContext";
 
 interface Product {
   id: number;
@@ -20,6 +20,7 @@ interface Product {
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
+  const { addToCart } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -29,7 +30,7 @@ const ProductDetails = () => {
       id: 1,
       name: "Rainbow Birthday Cake",
       category: "Cakes",
-      price: 45.99,
+      price: 4599,
       image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
       images: [
         "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&h=600&fit=crop",
@@ -42,7 +43,7 @@ const ProductDetails = () => {
       id: 2,
       name: "Chocolate Chip Cookies",
       category: "Cookies",
-      price: 12.99,
+      price: 1299,
       image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop",
       images: [
         "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800&h=600&fit=crop",
@@ -54,7 +55,7 @@ const ProductDetails = () => {
       id: 3,
       name: "Fudge Brownies",
       category: "Brownies",
-      price: 18.99,
+      price: 1899,
       image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=300&fit=crop",
       images: [
         "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&h=600&fit=crop",
@@ -72,10 +73,13 @@ const ProductDetails = () => {
   }, [id]);
 
   const handleAddToCart = () => {
-    toast({
-      title: "Added to Cart",
-      description: `${product?.name} has been added to your cart!`,
-    });
+    if (product) {
+      addToCart(product);
+      toast({
+        title: "Added to Cart",
+        description: `${product.name} has been added to your cart!`,
+      });
+    }
   };
 
   if (!product) {
@@ -156,7 +160,7 @@ const ProductDetails = () => {
                   {product.name}
                 </h1>
                 <div className="text-3xl font-bold text-primary mb-6">
-                  ${product.price}
+                  ₦{product.price}
                 </div>
               </div>
 
@@ -214,7 +218,7 @@ const ProductDetails = () => {
                         </h3>
                       </Link>
                       <div className="text-lg font-bold text-primary mt-2">
-                        ${relatedProduct.price}
+                        ₦{relatedProduct.price}
                       </div>
                     </CardContent>
                   </Card>

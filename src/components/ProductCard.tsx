@@ -18,9 +18,10 @@ interface ProductCardProps {
   onEdit?: (product: Product) => void;
   onDelete?: (id: number) => void;
   isAdmin?: boolean;
+  onAddToCart?: (product: Product) => void;
 }
 
-const ProductCard = ({ product, onEdit, onDelete, isAdmin = false }: ProductCardProps) => {
+const ProductCard = ({ product, onEdit, onDelete, isAdmin = false, onAddToCart }: ProductCardProps) => {
   return (
     <Card className="group overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
       <div className="relative overflow-hidden">
@@ -42,7 +43,7 @@ const ProductCard = ({ product, onEdit, onDelete, isAdmin = false }: ProductCard
         <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
         <div className="flex items-center justify-between">
           <span className="text-2xl font-bold text-primary">
-            ${product.price}
+            ₦{product.price}
           </span>
           {isAdmin ? (
             <div className="flex gap-2">
@@ -63,7 +64,10 @@ const ProductCard = ({ product, onEdit, onDelete, isAdmin = false }: ProductCard
               </Button>
             </div>
           ) : (
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
+            <Button 
+              onClick={() => onAddToCart?.(product)}
+              className="bg-primary hover:bg-primary/90 text-white rounded-full px-6"
+            >
               Add to Cart
             </Button>
           )}
