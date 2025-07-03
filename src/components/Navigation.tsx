@@ -21,10 +21,10 @@ const Navigation = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
-            <div className="bg-gradient-to-r from-pink-400 to-purple-500 p-2 rounded-lg">
+            <div className="bg-primary p-2 rounded-lg">
               <Cake className="h-6 w-6 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-xl font-bold text-primary">
               Kiddie's Cake
             </span>
           </Link>
@@ -37,8 +37,8 @@ const Navigation = () => {
                 to={link.path}
                 className={`font-medium transition-colors duration-200 ${
                   isActive(link.path)
-                    ? "text-purple-600 border-b-2 border-purple-600"
-                    : "text-gray-700 hover:text-purple-600"
+                    ? "text-primary border-b-2 border-primary"
+                    : "text-gray-700 hover:text-primary"
                 }`}
               >
                 {link.label}
@@ -69,8 +69,8 @@ const Navigation = () => {
                   to={link.path}
                   className={`block px-4 py-2 font-medium transition-colors duration-200 ${
                     isActive(link.path)
-                      ? "text-purple-600 bg-purple-50"
-                      : "text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+                      ? "text-primary bg-accent"
+                      : "text-gray-700 hover:text-primary hover:bg-accent"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >

@@ -1,6 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 interface Product {
   id: number;
@@ -8,6 +9,7 @@ interface Product {
   category: string;
   price: number;
   image: string;
+  images?: string[];
   description: string;
 }
 
@@ -23,21 +25,23 @@ const ProductCard = ({ product, onEdit, onDelete, isAdmin = false }: ProductCard
     <Card className="group overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
       <div className="relative overflow-hidden">
         <img
-          src={product.image}
+          src={product.images?.[0] || product.image}
           alt={product.name}
           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
         />
         <div className="absolute top-4 left-4">
-          <span className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+          <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
             {product.category}
           </span>
         </div>
       </div>
       <CardContent className="p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-2">{product.name}</h3>
+        <Link to={`/product/${product.id}`}>
+          <h3 className="text-xl font-bold text-gray-800 mb-2 hover:text-primary transition-colors cursor-pointer">{product.name}</h3>
+        </Link>
         <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+          <span className="text-2xl font-bold text-primary">
             ${product.price}
           </span>
           {isAdmin ? (
@@ -46,7 +50,7 @@ const ProductCard = ({ product, onEdit, onDelete, isAdmin = false }: ProductCard
                 variant="outline"
                 size="sm"
                 onClick={() => onEdit?.(product)}
-                className="border-purple-300 text-purple-600 hover:bg-purple-50"
+                className="border-primary text-primary hover:bg-accent"
               >
                 Edit
               </Button>
@@ -59,7 +63,7 @@ const ProductCard = ({ product, onEdit, onDelete, isAdmin = false }: ProductCard
               </Button>
             </div>
           ) : (
-            <Button className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full px-6">
+            <Button className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
               Add to Cart
             </Button>
           )}

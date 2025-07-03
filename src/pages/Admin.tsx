@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ProductCard from "@/components/ProductCard";
 import Navigation from "@/components/Navigation";
+import ImageUpload from "@/components/ImageUpload";
 import { useToast } from "@/hooks/use-toast";
 
 interface Product {
@@ -18,6 +19,7 @@ interface Product {
   category: string;
   price: number;
   image: string;
+  images?: string[];
   description: string;
 }
 
@@ -30,6 +32,7 @@ const Admin = () => {
       category: "Cakes",
       price: 45.99,
       image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
+      images: ["https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop"],
       description: "Colorful layered cake perfect for birthday celebrations"
     },
     {
@@ -38,6 +41,7 @@ const Admin = () => {
       category: "Cookies",
       price: 12.99,
       image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop",
+      images: ["https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop"],
       description: "Freshly baked cookies with premium chocolate chips"
     },
     {
@@ -46,6 +50,7 @@ const Admin = () => {
       category: "Brownies",
       price: 18.99,
       image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=300&fit=crop",
+      images: ["https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=300&fit=crop"],
       description: "Rich, decadent brownies with a perfect fudgy texture"
     }
   ]);
@@ -56,8 +61,8 @@ const Admin = () => {
     name: "",
     category: "",
     price: "",
-    image: "",
-    description: ""
+    description: "",
+    images: [] as string[]
   });
 
   const categories = ["Cakes", "Cookies", "Brownies"];
@@ -67,8 +72,8 @@ const Admin = () => {
       name: "",
       category: "",
       price: "",
-      image: "",
-      description: ""
+      description: "",
+      images: []
     });
     setEditingProduct(null);
   };
@@ -85,10 +90,20 @@ const Admin = () => {
       return;
     }
 
+    if (formData.images.length === 0) {
+      toast({
+        title: "Error",
+        description: "Please upload at least one image.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const productData = {
       ...formData,
       price: parseFloat(formData.price),
-      image: formData.image || "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop"
+      image: formData.images[0],
+      images: formData.images
     };
 
     if (editingProduct) {
@@ -123,8 +138,8 @@ const Admin = () => {
       name: product.name,
       category: product.category,
       price: product.price.toString(),
-      image: product.image,
-      description: product.description
+      description: product.description,
+      images: product.images || [product.image]
     });
     setIsDialogOpen(true);
   };
@@ -138,14 +153,14 @@ const Admin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-orange-50">
       <Navigation />
       
       <div className="pt-20 pb-8 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
+              <h1 className="text-4xl md:text-5xl font-bold text-primary mb-2">
                 Admin Dashboard
               </h1>
               <p className="text-xl text-gray-700">Manage your delicious products</p>
@@ -154,7 +169,7 @@ const Admin = () => {
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button 
-                  className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full px-6 py-3 shadow-lg"
+                  className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-3 shadow-lg"
                   onClick={() => {
                     resetForm();
                     setIsDialogOpen(true);
@@ -164,9 +179,9 @@ const Admin = () => {
                   Add New Product
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-md">
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                  <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                  <DialogTitle className="text-2xl font-bold text-primary">
                     {editingProduct ? "Edit Product" : "Add New Product"}
                   </DialogTitle>
                 </DialogHeader>
@@ -212,12 +227,11 @@ const Admin = () => {
                   </div>
                   
                   <div>
-                    <Label htmlFor="image">Image URL</Label>
-                    <Input
-                      id="image"
-                      value={formData.image}
-                      onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                      placeholder="https://example.com/image.jpg"
+                    <Label>Product Images * (up to 5)</Label>
+                    <ImageUpload
+                      images={formData.images}
+                      onImagesChange={(images) => setFormData({ ...formData, images })}
+                      maxImages={5}
                     />
                   </div>
                   
@@ -233,14 +247,14 @@ const Admin = () => {
                   </div>
                   
                   <div className="flex gap-2 pt-4">
-                    <Button type="submit" className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700">
+                    <Button type="submit" className="flex-1 bg-primary hover:bg-primary/90">
                       {editingProduct ? "Update" : "Add"} Product
                     </Button>
                     <Button 
                       type="button" 
                       variant="outline" 
                       onClick={() => setIsDialogOpen(false)}
-                      className="border-purple-300 text-purple-600 hover:bg-purple-50"
+                      className="border-primary text-primary hover:bg-accent"
                     >
                       Cancel
                     </Button>
@@ -252,30 +266,30 @@ const Admin = () => {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="bg-gradient-to-br from-pink-100 to-pink-200 border-0 shadow-lg">
+            <Card className="bg-orange-100 border-0 shadow-lg">
               <CardHeader className="pb-2">
-                <CardTitle className="text-pink-800">Total Products</CardTitle>
+                <CardTitle className="text-orange-800">Total Products</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-pink-600">{products.length}</div>
+                <div className="text-3xl font-bold text-primary">{products.length}</div>
               </CardContent>
             </Card>
             
-            <Card className="bg-gradient-to-br from-purple-100 to-purple-200 border-0 shadow-lg">
+            <Card className="bg-yellow-100 border-0 shadow-lg">
               <CardHeader className="pb-2">
-                <CardTitle className="text-purple-800">Categories</CardTitle>
+                <CardTitle className="text-yellow-800">Categories</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-purple-600">{categories.length}</div>
+                <div className="text-3xl font-bold text-primary">{categories.length}</div>
               </CardContent>
             </Card>
             
-            <Card className="bg-gradient-to-br from-indigo-100 to-indigo-200 border-0 shadow-lg">
+            <Card className="bg-amber-100 border-0 shadow-lg">
               <CardHeader className="pb-2">
-                <CardTitle className="text-indigo-800">Avg. Price</CardTitle>
+                <CardTitle className="text-amber-800">Avg. Price</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-indigo-600">
+                <div className="text-3xl font-bold text-primary">
                   ${products.length > 0 ? (products.reduce((sum, p) => sum + p.price, 0) / products.length).toFixed(2) : "0.00"}
                 </div>
               </CardContent>
