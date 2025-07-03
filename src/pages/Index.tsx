@@ -41,7 +41,7 @@ const Index = () => {
   ]);
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-gray-50">
       <Navigation />
       
       {/* Hero Section */}
@@ -64,13 +64,13 @@ const Index = () => {
               </p>
               <div className="flex gap-4 justify-center lg:justify-start flex-wrap">
                 <Link to="/products">
-                  <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                  <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
                     <ShoppingCart className="mr-2 h-5 w-5" />
                     Browse Products
                   </Button>
                 </Link>
                 <Link to="/cart">
-                  <Button variant="outline" size="lg" className="px-8 py-3 text-lg rounded-full border-2 border-primary hover:bg-accent transition-all duration-300">
+                  <Button variant="outline" size="lg" className="px-8 py-3 text-lg rounded-lg border-2 border-primary hover:bg-accent transition-all duration-300">
                     View Cart
                   </Button>
                 </Link>
@@ -86,10 +86,10 @@ const Index = () => {
                   className="w-full h-96 object-cover"
                 />
               </div>
-              <div className="absolute -top-6 -right-6 bg-amber-100 rounded-full p-4 shadow-lg">
+              <div className="absolute -top-6 -right-6 bg-accent/20 rounded-full p-4 shadow-lg">
                 <div className="text-3xl">🎂</div>
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-yellow-100 rounded-full p-4 shadow-lg">
+              <div className="absolute -bottom-6 -left-6 bg-accent/20 rounded-full p-4 shadow-lg">
                 <div className="text-3xl">🍰</div>
               </div>
             </div>
@@ -110,7 +110,7 @@ const Index = () => {
           </div>
           <div className="text-center mt-12">
             <Link to="/products">
-              <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+              <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
                 View All Products
               </Button>
             </Link>
@@ -119,7 +119,7 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section className="py-16 px-4 bg-white/50 backdrop-blur-sm">
+      <section className="py-16 px-4 bg-white/80 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-primary">
             Sweet Memories, Made Fresh Daily
@@ -130,25 +130,25 @@ const Index = () => {
             to your special moments.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <Card className="bg-orange-100 border-0 shadow-lg">
+            <Card className="bg-accent/10 border-0 shadow-lg">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl mb-4">🎂</div>
-                <h3 className="text-xl font-semibold mb-2 text-orange-800">Custom Cakes</h3>
-                <p className="text-orange-700">Personalized cakes for birthdays, weddings, and special occasions</p>
+                <h3 className="text-xl font-semibold mb-2 text-primary">Custom Cakes</h3>
+                <p className="text-foreground/80">Personalized cakes for birthdays, weddings, and special occasions</p>
               </CardContent>
             </Card>
-            <Card className="bg-yellow-100 border-0 shadow-lg">
+            <Card className="bg-accent/10 border-0 shadow-lg">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl mb-4">🍪</div>
-                <h3 className="text-xl font-semibold mb-2 text-yellow-800">Fresh Cookies</h3>
-                <p className="text-yellow-700">Daily baked cookies with premium ingredients and love</p>
+                <h3 className="text-xl font-semibold mb-2 text-primary">Fresh Cookies</h3>
+                <p className="text-foreground/80">Daily baked cookies with premium ingredients and love</p>
               </CardContent>
             </Card>
-            <Card className="bg-amber-100 border-0 shadow-lg">
+            <Card className="bg-accent/10 border-0 shadow-lg">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl mb-4">🍫</div>
-                <h3 className="text-xl font-semibold mb-2 text-amber-800">Rich Brownies</h3>
-                <p className="text-amber-700">Decadent brownies that melt in your mouth</p>
+                <h3 className="text-xl font-semibold mb-2 text-primary">Rich Brownies</h3>
+                <p className="text-foreground/80">Decadent brownies that melt in your mouth</p>
               </CardContent>
             </Card>
           </div>
