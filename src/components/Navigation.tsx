@@ -3,17 +3,18 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Cake, Menu, X, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/contexts/CartContext";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { getTotalItems } = useCart();
 
   const isActive = (path: string) => location.pathname === path;
 
   const navLinks = [
     { path: "/", label: "Home" },
-    { path: "/products", label: "Products" },
-    { path: "/admin", label: "Admin" }
+    { path: "/products", label: "Products" }
   ];
 
   return (
@@ -47,8 +48,13 @@ const Navigation = () => {
             
             <div className="flex items-center space-x-4">
               <Link to="/cart">
-                <Button variant="ghost" size="sm" className="text-gray-700">
+                <Button variant="ghost" size="sm" className="text-gray-700 relative">
                   <ShoppingCart className="h-5 w-5" />
+                  {getTotalItems() > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {getTotalItems()}
+                    </span>
+                  )}
                 </Button>
               </Link>
               <Link to="/profile">
@@ -100,7 +106,7 @@ const Navigation = () => {
                 className="block px-4 py-2 font-medium text-gray-700 hover:text-primary hover:bg-accent"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Cart
+                Cart ({getTotalItems()})
               </Link>
               <Link
                 to="/profile"

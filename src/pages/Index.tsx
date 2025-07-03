@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ProductCard from "@/components/ProductCard";
 import Navigation from "@/components/Navigation";
+import { useCart } from "@/contexts/CartContext";
 
 const Index = () => {
+  const { addToCart } = useCart();
   const [featuredProducts] = useState([
     {
       id: 1,
@@ -43,31 +45,54 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="pt-20 pb-16 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="flex justify-center mb-6">
-            <div className="bg-primary p-4 rounded-full">
-              <Cake className="h-16 w-16 text-white" />
+      <section className="pt-20 pb-16 px-4 relative overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div className="text-center lg:text-left">
+              <div className="flex justify-center lg:justify-start mb-6">
+                <div className="bg-primary p-4 rounded-full">
+                  <Cake className="h-16 w-16 text-white" />
+                </div>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-bold text-primary mb-6">
+                Kiddie's Cake
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-2xl">
+                Delightful cakes, cookies, and brownies made with love for every special occasion. 
+                Creating sweet memories one bite at a time.
+              </p>
+              <div className="flex gap-4 justify-center lg:justify-start flex-wrap">
+                <Link to="/products">
+                  <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                    <ShoppingCart className="mr-2 h-5 w-5" />
+                    Browse Products
+                  </Button>
+                </Link>
+                <Link to="/cart">
+                  <Button variant="outline" size="lg" className="px-8 py-3 text-lg rounded-full border-2 border-primary hover:bg-accent transition-all duration-300">
+                    View Cart
+                  </Button>
+                </Link>
+              </div>
             </div>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-primary mb-6">
-            Kiddie's Cake
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
-            Delightful cakes, cookies, and brownies made with love for every special occasion
-          </p>
-          <div className="flex gap-4 justify-center flex-wrap">
-            <Link to="/products">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-                <ShoppingCart className="mr-2 h-5 w-5" />
-                Browse Products
-              </Button>
-            </Link>
-            <Link to="/admin">
-              <Button variant="outline" size="lg" className="px-8 py-3 text-lg rounded-full border-2 border-primary hover:bg-accent transition-all duration-300">
-                Admin Panel
-              </Button>
-            </Link>
+            
+            {/* Right Image */}
+            <div className="relative">
+              <div className="rounded-3xl overflow-hidden shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=600&h=400&fit=crop"
+                  alt="People enjoying delicious cake"
+                  className="w-full h-96 object-cover"
+                />
+              </div>
+              <div className="absolute -top-6 -right-6 bg-amber-100 rounded-full p-4 shadow-lg">
+                <div className="text-3xl">🎂</div>
+              </div>
+              <div className="absolute -bottom-6 -left-6 bg-yellow-100 rounded-full p-4 shadow-lg">
+                <div className="text-3xl">🍰</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -80,7 +105,7 @@ const Index = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
             ))}
           </div>
           <div className="text-center mt-12">
